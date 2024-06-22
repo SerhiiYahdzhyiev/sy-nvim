@@ -55,6 +55,10 @@ vim.opt.inccommand = "split"
 
 -- Keymaps
 
+-- Keymaps:Splits
+nmap("<leader>v", "<cmd>vsplit<CR>")
+nmap("<leader>s", "<cmd>split<CR>")
+
 -- Keymaps:Base
 nmap("<leader>q", "<cmd>quit<CR>", { desc = "[Q]uit current window/pane/tab" })
 nmap("<leader>w", "<cmd>write<CR>", { desc = "[W]rite current changes" })
