@@ -61,7 +61,7 @@ nmap("<leader>s", "<cmd>split<CR>")
 
 -- Keymaps:Buffers
 nmap("<s-h>", "<cmd>bprevious<CR>")
-nmap("<s-l>s", "<cmd>bnext<CR>")
+-- nmap("<s-l>", "<cmd>bnext<CR>")
 
 -- Keymaps:Base
 nmap("<leader>q", "<cmd>quit<CR>", { desc = "[Q]uit current window/pane/tab" })
