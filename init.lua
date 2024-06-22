@@ -62,7 +62,7 @@ nmap("<leader>c", "<cmd>bd<CR>", { desc = "[C]lose current buffer" })
 nmap("<leader>l", "<cmd>Lazy<CR>", { desc = "Open [L]azy" })
 imap("jj", "<Esc>")
 nmap("<Esc>", "<cmd>nohlsearch<CR>")
-nmap("<leader>e", "<cmd>Neotree<CR>")
+nmap("<leader>e", "<cmd>Neotree toggle<CR>")
 
 -- Keymaps:Disable arrows
 nmap("<left>", "<cmd>echo 'Use h to go left!'<CR>")
