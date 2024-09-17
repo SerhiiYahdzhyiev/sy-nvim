@@ -94,6 +94,9 @@ nmap("<leader>d", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfi
 nmap("]b", "<cmd>tabnext<CR>")
 nmap("[b", "<cmd>tabprev<CR>")
 
+-- Keymaps:Transparency
+nmap("<leader>tt", "<cmd>TransparentToggle<CR>")
+
 -- Autocommands
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
