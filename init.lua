@@ -474,7 +474,8 @@ require("lazy").setup({
       "MunifTanjim/nui.nvim",
     }
   },
+  {"folke/tokyonight.nvim"}
 })
 
-vim.cmd("colorscheme gruvbox")
+vim.cmd("colorscheme tokyonight")
 -- vim: ts=2 sts=2 sw=2 et
