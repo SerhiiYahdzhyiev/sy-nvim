@@ -310,7 +310,7 @@ require("lazy").setup({
 			local servers = {
 				clangd = {},
 				pyright = {},
-				tsserver = {},
+				-- tsserver = {},
 				lua_ls = {
 					settings = {
 						Lua = {
@@ -478,7 +478,26 @@ require("lazy").setup({
     }
   },
   {"folke/tokyonight.nvim"},
+  {
+    "ojroques/nvim-osc52",
+    opts = {
+      max_length = 0,
+      silent = false,
+      trim=false,
+    }
+  },
 })
+
+local function yank_to_clipboard()
+  if vim.v.event.operator == 'y' and vim.v.event.regname == '' then
+    require('osc52').copy_register('"')
+  end
+end
+
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = yank_to_clipboard,
+})
+
 
 vim.cmd("colorscheme tokyonight")
 -- vim: ts=2 sts=2 sw=2 et
