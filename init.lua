@@ -201,13 +201,40 @@ require("lazy").setup({
 			-- Two important keymaps to use while in Telescope are:
 			--  - Insert mode: <c-/>
 			--  - Normal mode: ?
+      local actions = require("telescope.actions")
+      local action_state = require("telescope.actions.state")
+
+      local function open_all_selected(prompt_bufnr)
+        local picker = action_state.get_current_picker(prompt_bufnr)
+        local selections = picker:get_multi_selection()
+
+        actions.close(prompt_bufnr)
+
+        if #selections == 0 then
+          vim.cmd("edit " .. action_state.get_selected_entry().path)
+          return
+        end
+
+        for _, entry in ipairs(selections) do
+          vim.cmd("edit " .. entry.path)
+        end
+      end
+
 			require("telescope").setup({
 				defaults = {
 					mappings = {
-						n = {
-							["q"] = require("telescope.actions").close,
-						},
-					},
+			      i = {
+              ["<Tab>"] = actions.toggle_selection + actions.move_selection_next,
+              ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_previous,
+              ["<CR>"] = open_all_selected,
+            },
+            n = {
+              ["<Tab>"] = actions.toggle_selection + actions.move_selection_next,
+              ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_previous,
+              ["<CR>"] = open_all_selected,
+              ["q"] = actions.close,
+            },
+          },
 				},
 				extensions = {
 					["ui-select"] = {
@@ -221,6 +248,8 @@ require("lazy").setup({
 
 			-- See `:help telescope.builtin`
 			local builtin = require("telescope.builtin")
+			local actions = require("telescope.actions")
+
 			vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
 			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live [G]rep" })
 			vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[S]earch [F]iles" })
