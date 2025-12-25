@@ -406,9 +406,14 @@ require("lazy").setup({
 
 					-- If you prefer more traditional completion keymaps,
 					-- you can uncomment the following lines
-					["<Enter>"] = cmp.mapping.complete(),
-					["<CR>"] = cmp.mapping.confirm({ select = true }),
-					["<Tab>"] = cmp.mapping.select_next_item(),
+					["<CR>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.confirm({ select = false })
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          ["<Tab>"] = cmp.mapping.select_next_item(),
 					["<S-Tab>"] = cmp.mapping.select_prev_item(),
 					["<C-l>"] = cmp.mapping(function()
 						if luasnip.expand_or_locally_jumpable() then
