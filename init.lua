@@ -473,19 +473,12 @@ require("lazy").setup({
 	},
   {
     "nvim-treesitter/nvim-treesitter",
+    lazy = false,
     build = ":TSUpdate",
-    opts = {
-      ensure_installed = {"html", "lua", "luadoc", "vim", "vimdoc"},
-      auto_install = true,
-      highlight = {
-        enable = true,
-      },
-      indent = {endble = true},
-    },
-    config = function (_, opts)
+    config = function()
       require("nvim-treesitter.install").prefer_git = true
-      require("nvim-treesitter.configs").setup(opts)
-    end
+      require("nvim-treesitter").install({ "html", "lua", "luadoc", "vim", "vimdoc" })
+    end,
   },
   {
       "kdheepak/lazygit.nvim",
@@ -518,8 +511,12 @@ require("lazy").setup({
     opts = {
       max_length = 0,
       silent = false,
-      trim=false,
+      trim = false,
     }
+  },
+  {
+    'aklt/plantuml-syntax',
+    ft = { 'plantuml' }
   },
 })
 
