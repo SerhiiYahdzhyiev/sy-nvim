@@ -373,29 +373,12 @@ require("lazy").setup({
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
 		dependencies = {
-			{
-				"L3MON4D3/LuaSnip",
-				build = (function()
-					if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
-						return
-					end
-					return "make install_jsregexp"
-				end)(),
-			},
-			"saadparwaiz1/cmp_luasnip",
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
 		},
 		config = function()
 			local cmp = require("cmp")
-			local luasnip = require("luasnip")
-			luasnip.config.setup({})
 			cmp.setup({
-				snippet = {
-					expand = function(args)
-						luasnip.lsp_expand(args.body)
-					end,
-				},
 				completion = { completeopt = "menu,menuone,noinsert" },
 				mapping = cmp.mapping.preset.insert({
 
@@ -415,20 +398,9 @@ require("lazy").setup({
           end, { "i", "s" }),
           ["<Tab>"] = cmp.mapping.select_next_item(),
 					["<S-Tab>"] = cmp.mapping.select_prev_item(),
-					["<C-l>"] = cmp.mapping(function()
-						if luasnip.expand_or_locally_jumpable() then
-							luasnip.expand_or_jump()
-						end
-					end, { "i", "s" }),
-					["<C-h>"] = cmp.mapping(function()
-						if luasnip.locally_jumpable(-1) then
-							luasnip.jump(-1)
-						end
-					end, { "i", "s" }),
 				}),
 				sources = {
 					{ name = "nvim_lsp" },
-					{ name = "luasnip" },
 					{ name = "path" },
 				},
 			})
@@ -473,11 +445,35 @@ require("lazy").setup({
 	},
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     lazy = false,
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter.install").prefer_git = true
-      require("nvim-treesitter").install({ "html", "lua", "luadoc", "vim", "vimdoc" })
+      local parsers = {
+        "html",
+        "lua",
+        "luadoc",
+        "markdown",
+        "markdown_inline",
+        "query",
+        "vim",
+        "vimdoc",
+      }
+      local treesitter = require("nvim-treesitter")
+      treesitter.setup({
+        -- setup() prepends this directory so its parsers and queries take
+        -- precedence over the versions bundled with Neovim.
+        install_dir = vim.fn.stdpath("data") .. "/site",
+      })
+      treesitter.install(parsers)
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "html", "lua", "markdown", "vim", "vimdoc" },
+        callback = function()
+          vim.treesitter.start()
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
+      })
     end,
   },
   {
